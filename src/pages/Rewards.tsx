@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import RemainingTime from '../components/RemainingTime';
 import '../styles/components/Rewards.css';
 
 type RewardError = {
@@ -16,17 +17,12 @@ function isRewardError(response: RewardResponse): response is RewardError {
   return (response as RewardError).error !== undefined;
 }
 
-function isRewardOk(response: RewardResponse): response is RewardOk {
-  return (
-    (response as RewardOk).reward !== undefined &&
-    (response as RewardOk).rewardCount !== undefined
-  );
-}
-
 function Rewards() {
   const [username, setUsername] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
+  const [responseStatus, setResponseStatus] = useState<number>(0);
+
   const [reward, setReward] = useState<{ name: string; count: number }>({
     name: '',
     count: 0,
@@ -36,6 +32,7 @@ function Rewards() {
     try {
       setMessage('');
       setError(false);
+      setResponseStatus(0);
       setReward({ name: '', count: 0 });
 
       if (!username) {
@@ -57,6 +54,7 @@ function Rewards() {
       );
 
       const responseData: RewardResponse = await response.json();
+      setResponseStatus(response.status);
 
       if (isRewardError(responseData)) {
         setError(true);
@@ -64,24 +62,25 @@ function Rewards() {
         return;
       }
 
-      if (isRewardOk(responseData)) {
-        setReward({
-          name: responseData.reward,
-          count: responseData.rewardCount,
-        });
-        setError(false);
-        setMessage('Nagroda została odebrana');
-        return;
-      }
+      setReward({
+        name: responseData.reward,
+        count: responseData.rewardCount,
+      });
+      console.log(responseData);
+
+      setError(false);
+      setMessage('Nagroda została odebrana');
+      return;
     } catch {
       setError(true);
       setMessage('Wystąpił błąd podczas odbierania nagrody');
     }
   };
+
   return (
     <>
       <h1>Nagrody</h1>
-      <p>Na tej stronie znajdziesz dzienne nagrody do odebrania</p>
+      <p>Na tej stronie możesz odebrać codzienne, losowe nagrody</p>
       <p>
         Uwaga! Aby prawidłowo odebrać nagrodę, musisz być zalogowany na serwerze
       </p>
@@ -97,7 +96,7 @@ function Rewards() {
           <span className="redeem-form__button__title">Odbierz nagrodę</span>
         </button>
 
-        {reward.name && (
+        {!error && message && (
           <span style={{ display: 'block', marginTop: '30px' }}>
             Odebrana nagroda: {reward.name} (ilość: {reward.count})
           </span>
@@ -105,6 +104,11 @@ function Rewards() {
         {error && (
           <span style={{ color: 'red', display: 'block', marginTop: '30px' }}>
             {message}
+            {responseStatus === 400 && (
+              <div style={{ marginTop: '10px' }}>
+                Pozostały czas do odebrania nagrody: <RemainingTime />
+              </div>
+            )}
           </span>
         )}
       </p>

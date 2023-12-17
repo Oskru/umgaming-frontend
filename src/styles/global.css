@@ -24,6 +24,12 @@ html {
   background-color: var(--primary-light);
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 body {
   background-image: url('https://wallpaper-house.com/data/out/8/wallpaper2you_213223.png');
   background-size: cover;

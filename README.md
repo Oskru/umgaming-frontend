@@ -1,30 +1,24 @@
-# React + TypeScript + Vite
+# Frontend part of Minecraft Server web app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a React frontend part of the whole app (backend section found in [here](https://github.com/Oskru/umgaming-backend)) showing custom server events and providing an ability to give a player logged in to the server a daily reward. <br><br>
+I'm not really into creating MC server plugins, so integrating a well known web app with Minecraft's RCon protocool seemed like a way to go :)
 
-Currently, two official plugins are available:
+## Live preview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Live preview can be found in here: Live preview can be found in here: [umgaming](https://umgaming.onrender.com/)
+<br>
+Disclaimer: there can be a significant delay on the first request since the backend service got suspended because of inactivity.
 
-## Expanding the ESLint configuration
+## Tools / libraries used to build
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React
+- Vite
+- CSS
 
-- Configure the top-level `parserOptions` property like this:
+## Installation and starting the development server
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+1. Clone this repository using `git clone`
+2. Navigate to the project directory.
+3. Run the following commands: `npm install` and `npm run dev`
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+This will start the server on `http://localhost:5173` where all functionalities of communicating with backend service should be working flawlessly.
